@@ -1,0 +1,88 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+@section localCssSection{
+    <link href="~/Content/abonnement.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+}
+
+@section localJsSection{
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="~/Scripts/src/subscription.js"></script>
+}
+
+
+
+<div id="div-principale-formule" class="container-fluid">
+
+    <div class="mb-5 mt-5">
+        <input type="checkbox" checked data-toggle="toggle" data-on="Annuel" data-off="Mensuel" data-onstyle="success" data-offstyle="danger">
+    </div>
+
+    <div id="div-offre" class="row">
+
+        <!-- modele offre -->
+        <div class="offre-model hidden col-lg-4 col-12">
+            <fieldset class="fieldset-blue rounded formule m-2">
+                <legend data-bind-prop="specialDesc" class="m-2 hidden font-weight-bolder bg-blue text-warning rounded pr-2 pl-2 legend-special">Offre du moment</legend>
+                <div>
+
+                    <div class="mt-3 mb-3 text-center col-12">
+                        <h2 span data-bind-prop="name" class="name-model text-primary font-weight-bolder">Formule 1</h2>
+                    </div>
+
+                    <img data-bind-prop="avatar" class="card-img-top formule-picture" src="~/media/champeau_siege.jpg" alt="formule-picture">
+                    <div class="card-body">
+
+                        <h5 class="card-title font-weight-bold text-primary"><u>Modules inclus :</u></h5>
+
+                        <div data-bind-prop="cBenefits">
+
+                        </div>
+
+                        <h5 class="card-title font-weight-bold text-primary"><u>Options incluses :</u></h5>
+
+                        <div data-bind-prop="cItems">
+
+                        </div>
+
+                        <div class="mt-4 mb-4 d-flex align-items-center row" style="height: 4rem;">
+                            <div class="text-primary w-75 text-center mx-auto h1 font-weight-bolder"><span data-bind-prop="mensualPrice">prix</span> €/mois</div>
+                        </div>
+
+                        <div class="mt-2 d-flex justify-content-around align-items-center">
+                            <div class="col-6">
+                                <p class="details-model text-dark font-weight-bold btn"><a href="#details">Afficher détails</a></p>
+                            </div>
+                            <div class="col-6">
+                                <a data-bind-prop="id" href="../Login/CreaContact" class="ml-5 btn btn-primary bouton-heartbeat">S'abonner</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+    </div>
+
+    <!-- détails offre -->
+    <div id="details" class="hidden">
+        <fieldset class="">
+            <legend class="m-2 font-weight-bolder text-primary rounded pr-2 pl-2">Détails de l'offre</legend>
+            <div>
+                <span data-bind-prop="name"></span> <br />
+                <span data-bind-prop="cBenefits"></span> <br />
+                <span data-bind-prop="cItems"></span> <br />
+                <span data-bind-prop="description"></span> <br />
+            </div>
+            <div class="mt-2 d-flex justify-content-end align-items-center">
+                <div class="p-3">
+                    <a data-bind-prop="id" href="../Login/CreaContact" class="ml-5 btn btn-primary bouton-heartbeat">S'abonner</a>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+</div>

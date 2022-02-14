@@ -1,0 +1,96 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<script>
+        $(document).ready(function () {
+
+        //récupères model pour ma page, ici ResetPasswordModel
+
+        var model = JSON.parse('@Html.Raw(Json.Encode(Model))');
+
+        //initialise les fonctions de validations de formulaire basiques (email, minlength...) situés dans le script common
+
+        initValidator();
+
+    })
+
+</script>
+
+<script src="~/Scripts/src/formRegisterValidate.js"></script>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<link href="~/Content/registerSub.css" rel="stylesheet" />
+
+<div class="row div-principale">
+
+    <div id="divCreaUser" class="row">
+
+        <div class="col-lg-4 col-md-12">
+
+            <div class="card div-principale-inscription">
+
+                <div class="bg-light row p-2">
+
+                    <div class="col-9">
+                        <h4>S'inscrire maintenant </h4>
+                        <p>Remplissez ce formulaire pour créer votre espace</p>
+                    </div>
+
+                    <div class="col-3">
+                        <i class='fas fa-pencil-alt ml-2 fa-2x ml-0'></i>
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+
+                    <form id="formInscription" method="post" action="api/userSubscriber/createUserSubscriber">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="nomSociete" name="nom_societe" aria-label="Nom de votre société" placeholder="Nom de votre société" required minlength="2" maxlength="50" autofocus>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="nomClient" name="nom_client" aria-label="Nom" placeholder="Nom" required minlength="2" maxlength="50">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="prenomClient" name="prenom_client" aria-label="Prenom" placeholder="Prenom" required minlength="2" maxlength="50">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="mailClient" name="mail_client" aria-label="Email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" class="form-control" id="telClient" name="tel_client" aria-label="Numéro téléphone" placeholder="Numéro téléphone">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="motDePasse" name="mot_de_passe" aria-label="Mot de passe" placeholder="Mot de passe" required minlength="5" maxlength="50">
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" checked id="conditionsGenerales">
+                            <label class="form-check-label" for="labelCheck">J'accepte les conditions générales</label>
+                        </div>
+
+                        <div class="g-recaptcha" data-sitekey="la_clé_du_site"></div>
+
+                        <button type="submit" class="btn btn-primary mt-3">S'inscrire</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+            <div class="col-8">
+                <div class="div-deja-inscrit">
+                    <p>Déjà inscrit? Connectez-vous maintenant!</p>
+                    <a href="../Login/Login" class="btn btn-primary">Se connecter</a>
+                </div>
+            </div>
+    </div>
+
+</div>
+
+
+
+

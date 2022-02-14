@@ -1,0 +1,228 @@
+﻿nav a img {
+    background-color: transparent !important;
+}
+
+.bg-blue {
+    background-color: #19253d !important;
+}
+
+.bg-dark {
+    background-color: #343a40 !important
+}
+
+
+#sidebar {
+    background-color: #45454C !important;
+}
+
+.sidebar-header {
+    background-color: #1ABC9C !important;
+}
+
+
+#sidebar ul ul li.active a {
+    // background-color: #fbb908 !important;
+}
+
+#sidebar ul ul li:not(.active) a {
+    background-color: #19253d !important;
+}
+
+.borderTheme {
+    border: 2px solid rgba(22,92,161,0.8);
+}
+
+.widget.embed-pills {
+    transition: unset !important;
+    background-color: #45454C !important;
+}
+
+.alt-color {
+    background-color: #45454C !important;
+}
+
+.img-app-logo {
+    content: url("../Media/logo_champeau_white.png") !important;
+    //height: 56px !important;
+}
+
+.bg-slide1 {
+    background-image: url("../Media/champeau_siege_blur.jpg");
+}
+
+.sidebar-header {
+    background: url("../Media/champeau_siege_blur.jpg") #1ABC9C !important;
+    background-size: cover !important;
+    opacity: 0.8;
+}
+
+.bg-success-alt {
+    background-color: rgba(80,204,179,0.9) !important;
+    font-weight: 600 !important;
+    color: white !important;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #d95701 !important;
+    border-color: #d95701 !important;
+}
+
+.nav-link {
+    //color: white;
+}
+
+
+
+    .nav-link.active, tr.selected {
+        // background-color: #d95701 !important;
+        // color: white !important;
+        // font-weight: 600 !important;
+    }
+
+#aupd_resa_title h3::after {
+    content: "";
+}
+
+#loginAccount {
+    background-color: transparent !important;
+}
+
+    #loginAccount .card-body {
+        //background-color: #FAFAFA;
+        background: rgba(255,255,255,0.8);
+    }
+
+.input-group .form-control {
+    // box-shadow: 0px 0px 1px 1px rgba(59,153,50,0.5);
+    box-shadow: 0px 0px 1px 1px rgba(19, 196, 196,0.5) !important;
+}
+
+.input-group:focus {
+    //box-shadow: 0px 0px 5px 2px rgba(59,153,50,0.5);
+}
+
+.input-group .form-control.error, .form-control.error {
+    box-shadow: 0px 0px 1px 1px rgba(227, 79, 121,1) !important;
+    border: 1px solid rgba(227, 79, 121,1) !important;
+}
+
+.input-group .form-control.success, .form-control.success {
+    box-shadow: 0px 0px 1px 1px rgba(138, 196, 0,1) !important;
+    border: 1px solid rgba(138, 196, 0,1) !important;
+}
+
+
+.md-skin:not(.landing) .navbar-brand.navbar-brand-logo img {
+    //background-color: white !important;
+}
+
+
+/*
+.md-skin.landing .navbar-brand-logo::after {
+    content: " • IntranetV3";
+    line-height: 56px;
+    vertical-align: middle;
+}
+    */
+
+.md-skin.landing .navbar {
+    height: 72px !important;
+}
+
+
+.filigran {
+    left: 10vw;
+    overflow: hidden;
+    top: 0;
+    width: 1024px;
+    height: 100%;
+    position: fixed;
+}
+
+    .filigran::after {
+        content: "";
+        background: transparent url(../media/FiligraneOskala.png);
+        background-size: 1024px auto;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0.6;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+    }
+
+.overlapping-circle {
+    /* background-color: black; */
+    border: 2px solid #50ccb3;
+    border-radius: 70px;
+    height: 128px;
+    width: 128px;
+    margin-right: auto;
+    margin-left: auto;
+    -webkit-box-shadow: 0 0 5px #50ccb3;
+    -moz-box-shadow: 0 0 5px #50ccb3;
+    box-shadow: 0 0 5px #50ccb3;
+    background-image: url(../Media/default_profile.png);
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.dataTable {
+    /*border: 1px solid rgba(80, 204, 179, 0.7);*/
+    border: 1px solid rgba(13, 99, 112,0.7);
+    border-radius: 4px !important;
+}
+
+    .dataTable thead th {
+        /*border-bottom: 1px solid rgba(80, 204, 179, 0.7);*/
+        border-bottom: 1px solid rgba(13, 99, 112,0.7);
+        border-top: 0;
+        //color:white;
+        color: rgb(30, 30, 30);
+    }
+
+    .dataTable td {
+        /*border-top: 1px solid rgba(80, 204, 179, 0.2);*/
+    }
+
+    .dataTable thead tr {
+        /*background-color: rgba(80, 204, 179, 0.5);*/
+        //background-color: rgba(13, 99, 112,0.5);
+        //background-color:rgba(80, 204, 179, 0.9);
+        background-color: #1abc9c;
+    }
+
+
+table.dataTable thead .sorting::after, table.dataTable thead .sorting::before {
+    display: none;
+}
+
+table.dataTable thead .sorting_asc::after {
+    font-family: "Font Awesome 5 Free";
+    content: "\f0de" !important;
+    opacity: 1;
+    font-size: 150% !important;
+    line-height: 50%;
+}
+
+table.dataTable thead .sorting_desc::after {
+    font-family: "Font Awesome 5 Free";
+    content: "\f0dd" !important;
+    opacity: 1;
+    font-size: 150% !important;
+    line-height: 100%;
+}
+
+table.dataTable thead .sorting_asc::before {
+    display: none;
+}
+
+table.dataTable thead .sorting_desc::before {
+    display: none;
+}

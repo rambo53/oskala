@@ -1,0 +1,54 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section localCssSection{
+    <link href="~/Content/testForm.css" rel="stylesheet" />
+
+}
+
+@section localJsSection{
+
+}
+
+<!-- Form test -->
+<div class="container-fluid">
+
+    <form class="form main-margin" method="POST" action="#">
+        <fieldset class="fieldset_form">
+            <legend>Formulaire d'inscription</legend>
+
+            <div class="radio">
+                <input id="male" type="radio" name="gender" value="male">
+                <label for="male" class="radio_modif">Male</label>
+                <input id="female" type="radio" name="gender" value="female">
+                <label for="female" class="radio_modif">Female</label>
+            </div>
+
+            <label for="surname" class="input_non_lie">
+                Nom :
+                <input class="input_form" id="surname" name="surname" type="text">
+            </label><br>
+
+            <label for="type" class="input_non_lie">
+                Type abonnement :
+                <select id="type" name="type">
+                    <option value="SEAN">séance</option>
+                    <option value="SEMA">semaine</option>
+                    <option value="MOIS">1 mois</option>
+                    <option value="3MOI">3 mois</option>
+                    <option value="ANNE">année</option>
+                </select>
+            </label><br>
+
+            <label for="adress" class="input_non_lie">Adresse :</label><br>
+            <textarea class="textarea_form" id="adress" name="adress" rows="5" cols="33"></textarea>
+            <br>
+
+            <input type="submit" class="submit" value="envoyer">
+        </fieldset>
+    </form>
+
+</div>

@@ -1,0 +1,452 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>@ViewBag.Title</title>
+
+    <meta http-equiv="cache-control" content="private" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Language" content="fr" />
+    <meta name="language" content="Français" />
+    <meta name="description" content="@ViewBag.Description" />
+
+    <meta name="robots" content="noindex">
+    <meta name="googlebot" content="noindex">
+
+    @if (IsSectionDefined("localCssSection"))
+    {
+        @RenderSection("localCssSection", false);
+    }
+
+
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&lang=fr' rel='stylesheet' type='text/css' />
+
+    <link href='~/Content/color.css' rel='stylesheet' type='text/css' />
+
+    @Styles.Render("~/Content/css")
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/solid.css" integrity="sha384-rdyFrfAIC05c5ph7BKz3l5NG5yEottvO/DQ0dCrwD8gzeQDjYBHNr1ucUpQuljos" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/fontawesome.css" integrity="sha384-u5J7JghGz0qUrmEsWzBQkfvc8nK3fUT7DCaQzNQ+q4oEXhGSx+P2OqjWsfIRB8QT" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!--<link href="~/Content/Custom-form.css" rel="stylesheet" />-->
+    <link href="~/Content/login.css" rel="stylesheet" type='text/css' />
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <!--Script commun chaque page-->
+
+    <script src="~/Scripts/common.js?V=3"></script>
+
+
+    @if (IsSectionDefined("localJsSection"))
+    {
+        @RenderSection("localJsSection", false);
+    }
+    <script src="~/Scripts/jquery.mask.min.js"></script>
+    <script>
+        /*Chargements*/
+        $(document).ready(function () {
+
+            var user = {};
+            var token = localStorage.getItem("token");
+            var headers = {};
+            if (token) {
+                headers.Authorization = 'Bearer ' + token;
+                headers["X-CSRF-TOKEN"] = $('meta[name="csrf-token"]').attr('content');
+            }
+
+
+            $.ajaxSetup({
+                url: "",
+                timeout: 0,
+                headers: headers,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                /*xhrFields: {
+                withCredentials: true
+                },*/
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    //trapAjaxErrors(XMLHttpRequest, textStatus, errorThrown);
+                },
+                async: true
+            });
+        });
+
+
+            if (typeof localPageInit == 'function') {
+
+                if (!domain_name.startsWith("pandora")) {
+                    //Swal.close();
+
+                    loadCssFile("../Content/" + domain_name + ".css");
+                    // Swal.close();
+                    localPageInit(user);
+                } else {
+                    //Swal.close();
+                    localPageInit(user);
+                }
+
+                $("@ViewBag.Message").closest("li").addClass("active");
+
+            }
+
+    </script>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+
+        function updateSidebar() {
+            console.debug($(document).width());
+            if ($(document).width() < 768) {
+                //$('#sidebarCollapse').removeClass("hidden");
+                $('#sidebar').addClass("floating-sidebar");
+                $('#sidebar').css("height", "calc(100% - " + ($('.navbar').outerHeight() + $('footer').outerHeight()) + "px)");
+            }
+            else {
+                $('#sidebar').removeClass("active");
+                //  $('#sidebarCollapse').addClass("hidden");
+                $('#sidebar').removeClass("floating-sidebar");
+                $('#sidebar').css("height", "");
+            }
+        }
+
+        function loadStatusBtnGrp(domID, defaultID, filter, withGlobals, callback) {
+            /*active = 1I inactive = 0I all = 2I*/
+            var args = {};
+            args.categ = filter;
+            args.includeGlobals = withGlobals;
+            getMethod("../api/data/GetStatus", args, function (data) {
+                if (data.isSuccess) {
+                    var btnGrp = $('#' + domID);
+                    btnGrp.empty();
+                    btnGrp.data("categ", 0);
+                    /*var div = "<div class='radio radio-default radio-inline'>\
+                        <input type='radio' id='inlineRadio1' value='option1' name='status'>\
+                        <label for='inlineRadio1'>Inline One</label></div>";*/
+                    var div = '<div class="custom-control custom-radio custom-check-color custom-control-inline"> \
+                        <input type="radio" id="inlineRadio1" value="option1" name="status" class="custom-control-input"> \
+                        <label class="custom-control-label" for="inlineRadio1">Inline One</label> \
+                    </div>';
+                    $.each(data.result, function (index, dt) {
+                        if (dt.tag == "True") {
+                            var newStatus = $(div);
+                            newStatus.attr("id", "st_" + dt.id);//idStatut
+                            if (dt.value.startsWith("<")) {//idStatut
+                                newStatus.find("label").html($(dt.value));//Libelle
+                                //newStatus.append($(dt.Libelle));
+                            } else {
+                                newStatus.find("label").text(dt.value);//Libelle
+                            }
+                            newStatus.find("label").attr("for", "status_" + dt.id);//idStatut
+                            newStatus.find("input").attr("id", "status_" + dt.id);//idStatut
+                            newStatus.find("input").val(dt.id);//idStatut
+                            newStatus.addClass(dt.icon.replace(/label/g, "badge"));//css
+                            if (dt.id == defaultID) {//idStatut
+                                newStatus.find("input").prop("checked", true);
+                            }
+                            newStatus.data("dtStatus", dt);
+                            btnGrp.append(newStatus);
+                        }
+                    });
+                    if (callback && typeof (callback) === "function") { callback(data); }
+                } else {
+                    showBsDialog("dlgModal", "Echec", "Echec de chargement des Status<p>" + data.errorMessage + "</p>", { dialogInput: 4, dialogResult: 0 });
+                }
+            });
+        }
+
+        function loadEmpOptgrp(domID, defaultID, filter, includeAll, callback) {
+            /*active = 1I inactive = 0I all = 2I*/
+
+            getMethod("../api/data/GetActiveEmployees", filter, function (data) {
+                if (data.isSuccess) {
+                    var select;
+
+                    if (domID.startsWith('.')) {
+                        select = $(domID);
+                    } else {
+                        select = $('#' + domID);
+                    }
+                    select.find('option').remove().end();
+                    var curItem = null;
+                    curItem = select; //$("<optgroup label='Intervenants'>");
+                    if (parseBool(includeAll)) {
+                        select.append(new Option("Tous", 0));
+                    }
+                    $.each(data.result, function (index, dt) {
+                        if (dt.SalID != defaultID) {
+                            curItem.append("<option value=" + dt.IDsal + ">" + dt.Nom + " " + dt.Prenom + "</option>");
+                        } else {
+                            curItem.append("<option value=" + dt.IDsal + " selected='selected' >" + dt.Nom + " " + dt.Prenom + "</option>");
+                        }
+                        select.append(curItem);
+                        select.find('option:last').data("cacheemp", dt);
+                    });
+                    // curItem.append("</optgroup>");
+                    //select.append(curItem);
+                    select.trigger("chosen:updated");
+
+                    if (callback && typeof (callback) === "function") { callback(data); }
+
+                } else {
+                    showBsDialog("dlgModal", "Echec", "Echec de chargement des personnes<p>" + data.errorMessage + "</p>", { dialogInput: 4, dialogResult: 0 });
+                }
+            });
+        }
+
+        function formatPrice(lang, currency, number) {
+            return new Intl.NumberFormat(lang, { style: "currency", currency }).format(number);
+        }
+
+        function reverseFormatPrice(lang, currency, money) {
+            var separatorDecimal = new Intl.NumberFormat(lang, {
+                style: "decimal"
+            })
+                .format(11.11)
+                .replace(/\d/g, "");
+
+            var separatorThousands = new Intl.NumberFormat(lang, {
+                style: "decimal"
+            })
+                .format(1111)
+                .replace(/\d/g, "");
+
+            var symbolOnLeft = new Intl.NumberFormat(lang, {
+                style: "currency",
+                currency
+            })
+                .format(1)
+                .replace(
+                    new RegExp(`\\d|[${separatorDecimal}${separatorThousands}]*`, "g"),
+                    ""
+                );
+
+            var stringNumber = money
+                .replace(new RegExp(`[${separatorThousands}]`, "g"), "")
+                .replace(separatorDecimal, ".")
+                .replace(new RegExp(`[${symbolOnLeft}]`, "g"), "");
+
+            return parseFloat(stringNumber);
+        }
+
+        function formatNumberFr(i) {
+            var n = new Number(i);
+            x = n.toLocaleString("fr-FR");
+            return x
+        }
+
+        function formatBigNumberFr(i) {
+            var n = new Intl.NumberFormat("fr-FR", { maximumSignificantDigits: 8 }).format(i);
+            return n
+        }
+
+        function timeConvert(n) {
+            var num = n;
+            var hours = (num / 60);
+            var rhours = Math.floor(hours);
+            var minutes = (hours - rhours) * 60;
+            var rminutes = Math.round(minutes);
+            if (rminutes > 0) {
+                return "(" + rhours + " h et " + rminutes + " min)";
+            } else {
+                return "(" + rhours + " h)";
+            }
+        }
+
+        /*Chargements*/
+        $(document).ready(function () {
+
+            var user = {};
+            var token = localStorage.getItem("token");
+            var headers = {};
+            if (token) {
+                headers.Authorization = 'Bearer ' + token;
+                headers["X-CSRF-TOKEN"] = $('meta[name="csrf-token"]').attr('content');
+            }
+
+
+            $.ajaxSetup({
+                url: "",
+                timeout: 0,
+                headers: headers,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                /*xhrFields: {
+                    withCredentials: true
+                },*/
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    //trapAjaxErrors(XMLHttpRequest, textStatus, errorThrown);
+                },
+                async: true
+            });
+
+
+
+            var domain_name = document.location.hostname;
+
+
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+
+
+            getMethod("../api/Data/GetUser", null, function (data) {
+                if (data && data.isSuccess) {
+                    console.debug(data);
+
+                    $("#username").text(data.result.UserLogin);
+                    $("#userrole").text(data.result.GroupName);
+                    user = data.result;
+
+
+                    var argsMnu = {};
+                    argsMnu.categ = "MNU";
+                    argsMnu.period = "A";
+                    argsMnu.startdate = moment("1970-01-01").format('YYYY-MM-DDT') + '00:00Z';
+
+                    $("#userCustomMenu").empty();
+                    getMethod("../api/data/GetConfigMenu", argsMnu, function (data) {
+                        if (data.isSuccess) {
+                            $("#userCustomMenu").append(data.result);
+
+
+                            //Aperçus Pages customs
+                            var argsCms = {};
+                            argsCms.categ = "PGE";
+                            argsCms.period = "D";
+                            argsCms.startdate = moment("1970-01-01").format('YYYY-MM-DDT') + '00:00Z';
+                            getMethod("../api/data/GetConfigBindsCollection", argsCms, function (data) {
+
+                                if (data.isSuccess) {
+                                    /*var cms = JSON.parse(data.result);
+                                    if (!cms) {
+                                        cms = { result: [] };
+                                    }*/
+
+                                    $.each(data.result, function (index, dt) {
+                                        //if (dt.OrgID.length==0 || dt.OrgID.indexOf(user.UserActiveSiteID) >= 0 || dt.OrgID.indexOf(user.UserActiveSiteID.toString()) >= 0) {
+                                        // var cms = JSON.parse(dt);
+                                        var clone = $("#contentsMenu").closest("li").clone();
+                                        var link = clone.find("a");
+                                        clone.removeClass("hidden");
+                                        clone.addBack("genMenu");
+                                        var bindID = dt.BindID;
+                                        var binds = dt.BindID.split("-");
+                                        if (binds.length == 3 || (binds.length == 4 && parseInt(binds[3]) == 1)) {
+
+                                            link.prop("contentlinksmenu-" + dt.ID);
+                                            link.prop("href", "../Home/ShowContent?ID=" + dt.ID + "&bindID=" + dt.BindID);
+                                            link.attr("data-id", dt.ID);
+                                            link.attr("data-bindid", dt.BindID);
+                                            link.text(dt.Titre);
+
+                                            switch (binds[1]) {
+                                                case "RH":
+                                                    $("#rhSubmenu").append(clone);
+                                                    break;
+                                                case "OGA":
+                                                    $("#ctlgSubmenu").append(clone);
+                                                    break;
+                                                case "TAB":
+                                                    $("#homeSubmenu").append(clone);
+                                                    break;
+                                                case "REM":
+                                                    $("#pageSubmenu").append(clone);
+                                                    break;
+                                                case "TCB":
+                                                    $("#ctlgTelSubmenu").append(clone);
+                                                    break;
+                                            }
+
+                                        }
+
+                                    });
+                                }
+
+                            });
+
+
+                        }
+
+                    });
+
+
+                }
+            });
+
+            /*if (typeof localPageInit == 'function') {
+
+                if (!domain_name.startsWith("pandora")) {
+                    //Swal.close();
+
+                    loadCssFile("../Content/" + domain_name + ".css");
+                    // Swal.close();
+                    localPageInit(user);
+                } else {
+                    //Swal.close();
+                    localPageInit(user);
+                }
+
+                $("@ViewBag.Message").closest("li").addClass("active");
+
+            }*/
+
+
+            function loadSamples(id, callback) {
+                var args = { id: id };
+                return getMethod("../API/Values/GetSample", args, function (result) {
+                    alert(result);
+                    if (callback && typeof (callback) === 'function') { callback(result); }
+                });
+            }
+
+
+            $(window).resize(function () {
+                updateSidebar();
+            });
+            $(window).resize();
+
+            $('#sidebarCollapse').click();
+        }
+        );
+
+    </script>
+
+
+</head>
+<body class="md-skin landing">
+    <!-- Begin page content -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-nav-scroll">
+        <a class="navbar-brand navbar-brand-logo" href="#">
+            <img src="" height="48" class="img-app-logo d-inline-block align-top" alt="">
+        </a>
+    </nav>
+
+    <main role="main" class="h-100 container-fluid row mx-auto d-flex justify-content-center">
+
+        @RenderBody()
+
+    </main>
+
+    <!-- Footer-->
+
+
+
+</body>
+</html>

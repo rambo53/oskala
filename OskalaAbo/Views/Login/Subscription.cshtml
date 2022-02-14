@@ -1,0 +1,194 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+
+@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+@section localCssSection{
+    <link href="~/Content/subscription.css" rel="stylesheet" />
+}
+
+@section localJsSection{
+    <script src="~/Scripts/src/subscription.js"></script>
+}
+
+<script>
+    var model = JSON.parse('@Html.Raw(Json.Encode(Model))');
+
+    function bindSubscriptionItems(selecteur, obj) {
+        //itération sur mes data bind prop dans mon objet cloné
+        if (obj) {
+            console.log("New Bind on " + selecteur);
+            $(selecteur).find('[data-bind-prop]').each(function (j, el) {
+
+                const currentProp = $(this).attr('data-bind-prop');
+                if (currentProp.length > 0 && obj.hasOwnProperty(currentProp)) {
+                    let target = "";
+                    let prop = obj[currentProp];
+
+                    //itération sur ma prop si c'est une collection
+
+                    target = $(el).attr('data-bind-src') || "";
+                    switch (target) {
+                        case "": $(this).text(prop); break;
+                        case "text": $(this).text(prop); break;
+                        case "html": $(this).html(prop); break;
+                        case "class": $(this).addClass(prop); break;
+                        case "model":
+                            var modelItem = $(el).find(".item-model").first();
+                            $(prop).each(function (k, itemObj) {
+                                var cloneItem = $(modelItem).clone();
+                                cloneItem.removeClass("item-model hidden");
+                                cloneItem.find("[data-bind-prop-item]").each(function () {
+                                    $(this).attr("data-bind-prop", $(this).attr("data-bind-prop-item"));
+                                    $(this).removeAttr("data-bind-prop-item");
+                                });
+                                $(el).append(cloneItem);
+                                bindSubscriptionItems(cloneItem, itemObj);
+                            });
+                            break;
+                        case "style-color": $(this).css("color", prop); break;
+                        case "style-bg": $(this).css("background-image", "url(" + prop + ")"); break;
+                        case "show": prop ? $(this).removeClass("invisible") : $(this).addClass("invisible"); break;
+                        default: $(this).attr(target, prop); break;
+                    }
+
+                } else {
+                    console.log("Property not found " + currentProp);
+                    console.debug(obj);
+                }
+            });
+        } else {
+            console.log("Object not found ");
+        }
+    }S
+
+    function localPageInit(){
+
+        var obj1 = {
+            id: 1,
+            name: 'Pinhead',
+            isSpecial: false,
+            specialDesc: "Offre du moment",
+            cBenefits: ["Planning", "Télégestion"],
+            cItems: ["option 1", "option 2", "option 3"],
+            mensualPrice: 29,
+            description: "No tears, please. It's a waste of good suffering...",
+            avatar: "https://fr.techtribune.net/wp-content/uploads/2021/08/3867530-hellraiser-1021x580.jpg",
+            offerThemeClass: "light-green-500",
+        };
+
+        var obj2 = {
+            id: 2,
+            name: 'Vador',
+            isSpecial: true,
+            specialDesc: "Offre du moment",
+            cBenefits: ["Planning", "Télégestion"],
+            cItems: ["option 1", "option 2", "option 3", "option 4"],
+            mensualPrice: 39,
+            description: "Offre parfaite pour gérer vos troupes à travers la galaxie.",
+            avatar: "https://fr.web.img4.acsta.net/r_654_368/newsv7/20/09/24/15/36/1415597.jpg",
+            offerThemeClass: "amber-500",
+        };
+
+        var model = new Array();
+        model.push(obj1);
+        model.push(obj2);
+
+        console.log("local ok");
+        getSubcription(model);
+    }
+
+</script>
+
+<div id="div-principale-formule" class="container-fluid">
+
+    <div class="d-flex m-4 switch-size">
+        <span id="month" class="m-1 h4 mr-2 font-weight-bold opa-switch">Mensuel</span>
+        <label class="switch">
+            <input id="switch" type="checkbox" checked="checked">
+            <span class="slider round"></span>
+        </label>
+        <span id="year" class="m-1 ml-2 h4 font-weight-bold text-primary">Annuel</span>
+    </div>
+
+    <div id="div-offre" class="row d-flex justify-content-lg-around">
+
+
+
+        <!-- modele offre -->
+        <div class="offre-model formule hidden card hidden col-lg-4 col-12">
+
+            <div id="special" class="row special-visi text-center text-warning rounded">
+                <span data-bind-prop="specialDesc" class="p-2 col-4 bg-blue font-weight-bolder"></span>
+            </div>
+            <div>
+
+                <div class="mb-3 text-center col-12">
+                    <h2 span data-bind-prop="name" class="name-model text-primary font-weight-bolder"></h2>
+                    <div data-bind-prop="description" data-bind-src="title"></div>
+                </div>
+
+                <img data-bind-prop="avatar" data-bind-src="src" class="card-img-top formule-picture" src="" alt="formule-picture">
+                <div class="card-body">
+
+                    <h5 class="card-title font-weight-bold text-primary"><u>Modules inclus :</u></h5>
+
+                    <div>
+
+                        <p data-bind-prop="cBenefits" class="model"></p>
+
+                    </div>
+
+                    <h5 class="card-title font-weight-bold text-primary"><u>Options incluses :</u></h5>
+
+                    <div>
+
+                        <div data-bind-prop="cItems" class="model"></div>
+
+                    </div>
+
+                    <div class="mt-4 mb-4 d-flex align-items-center row" style="height: 4rem;">
+                        <div class="text-primary w-75 text-center mx-auto h1 font-weight-bolder"><span data-bind-prop="mensualPrice">prix</span> €/mois</div>
+                    </div>
+
+                    <div class="mt-2 d-flex justify-content-around align-items-center">
+                        <div class="col-6">
+                            <p class="details-model text-dark font-weight-bold btn"><a href="#details">Afficher détails</a></p>
+                        </div>
+                        <div class="col-6">
+                            <a data-bind-prop="id" data-bind-src="data-bind-id" href="../Login/CreaContact?id=" class="clickBtn ml-5 btn btn-primary bouton-heartbeat">S'abonner</a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- détails offre -->
+    <div id="details" class="hidden">
+        <fieldset class="fieldset-blue rounded m-2" data-bind-prop="offerThemeClass" data-bind-src="class">
+            <legend class="m-2 font-weight-bolder text-primary rounded pr-2 pl-2">Détails de l'offre</legend>
+            <div>
+                <span data-bind-prop="name"></span> <br />
+                <div>
+                    <p data-bind-prop="cBenefits" class="model"></p>
+                </div>
+                <div>
+                    <span data-bind-prop="cItems" class="model"></span>
+                </div>
+                <span data-bind-prop="description"></span> <br />
+            </div>
+            <div class="mt-2 d-flex justify-content-end align-items-center">
+                <div class="p-3">
+                    <a data-bind-prop="id" data-bind-src="data-bind-id" href="../Login/CreaContact?id=" class="clickBtn ml-5 btn btn-primary bouton-heartbeat">S'abonner</a>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+</div>

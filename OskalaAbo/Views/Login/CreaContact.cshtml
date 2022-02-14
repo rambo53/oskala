@@ -1,0 +1,395 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+
+@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+@section localCssSection{
+    <link href="~/Content/creaContact.css" rel="stylesheet" />
+}
+
+
+@section localJsSection{
+    <script src="~/Scripts/src/creaContact.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+}
+
+
+
+<script>
+
+    function localPageInit() {
+
+         var model = JSON.parse('@Html.Raw(Json.Encode(Model))');
+
+
+        //initialise les fonctions de validations de formulaire basiques (email, minlength...) situés dans le script common
+        initValidator("#formCreaContact", validateFormCreaContact);
+
+        //validation des champs mail et siret si déjà présent en bdd
+        //validationAsynch($("#formCreaContact"));
+
+        //verification niveau sécurité du password et listener onClick sur oeil pour visualiser password
+        checkPassword($("#password"), $('#affichePassword'));
+
+        //formatage des input type siret, num téléphone et code postal 
+        maskFormat();
+
+        //couleur theme abonnmeent
+        $("#abonnement").find("fieldset").addClass(model.offerThemeClass);
+
+        //valorisation input hidden avec l'id de l'abonnement sélectionné pour enregistrement
+        $("#aboId").attr("value", model.id)
+
+        //remplissage du champ récapitulatif de l'abonnement auquel l'utilisateur va souscrire
+        bindSubscriptionItems("#abonnement", model);
+    }
+
+
+
+    $(document).ready(function () {
+
+
+        $("#formCreaContact").data("current-step", 1);
+
+        
+        $(".next-btn").click(function () {
+
+            $(this).submit();
+  
+        })
+
+
+        $(".previous-btn").click(function () {
+
+            let indexStep = parseInt($("#formCreaContact").data("current-step")) || 0;
+
+            $(".step-" + indexStep).addClass("hidden");
+            $("#step-progress").find(".step-progress-" + indexStep).removeClass("bg-step-progress text-light").addClass("border border-step-progress text-step-progress");
+            indexStep--;
+
+            $(".step-" + indexStep).removeClass("hidden");
+            $("#step-progress").find(".step-progress-" + indexStep).addClass("bg-step-progress text-light").removeClass("text-step-progress");
+            $("#formCreaContact").data("current-step", indexStep);
+        })
+
+    })
+
+</script>
+
+
+
+
+<div class="mt-3 col-10 row d-flex justify-content-between">
+
+
+
+    <!--<div class="col-lg-4 row align-items-center">
+        <div class="card col-lg-12">
+            <p class="h4 mb-3 mt-3 color-text">Détails offre:</p>
+            <div data-bind-prop="OfferThemeColor" data-bind-src="style-color">
+                <h2 data-bind-prop="Name" class=" name-model font-weight-bolder ml-3">Oskala RDI Starter</h2>
+                <h5 data-bind-prop="Description">Sans engagement</h5>
+
+                <p>Pack</p>
+
+                <div class="rounded bg-success">
+                    <div class="mt-4 mb-4 d-flex align-items-center row">
+                        <div class="text-center mx-auto h1 text-light font-weight-bolder">
+                            <span>47</span>
+                            <span class="gray-300">€ HT/mois</span><br />
+
+                            <span class="item-pack bg-light text-dark h4 font-weight-bolder mt-2 p-2 col-12">Pack 5 Utilisateurs inclus</span><br />
+
+                            <small class="h4">1 gestionnaire</small><br />
+                            <small class="h4">4 classique</small>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>-->
+
+    <div class="col-lg-4 row align-items-center">
+        <div class="card col-lg-12">
+            <p class="h4 mb-3 mt-3 color-text">Détails offre:</p>
+            <div data-bind-prop="OfferThemeColor" data-bind-src="style-color">
+                <h2 data-bind-prop="Name" class=" name-model font-weight-bolder ml-3">Oskala RDI Starter</h2>
+                <h5 data-bind-prop="Description">Engagement 12 mois</h5>
+
+                <p>Licenses</p>
+
+                    <div class="mt-4 mb-4">
+
+                            <small class="h4">- 1 gestionnaire (47€ /mois)</small><br />
+                            <small class="h4">- 4 classique (19€ /mois)</small>
+                       
+                    </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-lg-6 mt-3 mt-lg-0">
+
+        <div id="step-progress" class="col-12">
+            <div class="col-6 row h-100 mx-auto d-flex justify-content-between">
+                <div class="step-progress-1 bg-step-progress rounded-circle rond text-light align-items-center row d-flex justify-content-center font-weight-bolder"><span class="sizing">1</span></div>
+
+                <div class="step-progress-2 border border-step-progress rounded-circle rond  align-items-center text-step-progress row d-flex justify-content-center font-weight-bolder"><span class="sizing">2</span></div>
+
+                <div class="step-progress-3 border border-step-progress rounded-circle rond  align-items-center text-step-progress row d-flex justify-content-center font-weight-bolder"><span class="sizing">3</span></div>
+            </div>
+        </div>
+
+
+        <div class="d-flex justify-content-center mt-3 row">
+
+
+            <form id="formCreaContact" class="col-lg-12">
+                <input name="__RequestVerificationToken" type="hidden" value="wSlKFWmun55Zm1zoNjTZnEMhSROGAbVUkn1LlleAWT4P9qtt04QKQzcKWogA7Wm1RG8HQ6vcs9345hXWvJG_7id6zgLeBSvOTH4AJRsZYSw1" />
+                <!--infos personnelles-->
+                <div class="step-1 card p-2 animate__animated animate__backInDown">
+
+                    <p class="h4 mb-3 mt-3 color-text">Informations personnelles :</p>
+
+                    <div class="col-12 ml-3">
+
+                        <input type="radio" name="titre" class="radio-titre" value="Mr" id="mr" checked>
+                        <label for="mr">Mr</label>
+                        <input type="radio" name="titre" class="radio-titre" value="Mme" id="mme">
+                        <label for="mme">Mme</label>
+                        <input type="radio" name="titre" class="radio-titre" value="Autre" id="autre">
+                        <label for="autre">Autre</label>
+
+
+
+                    </div>
+
+
+                    <div class="col-12">
+                        <div class="form-group col-12">
+                            <label for="contactNom" class="important-field">Nom</label><br />
+                            <input type="text" class="form-control col-md-6 text-uppercase animate__animated" id="contactNom" name="last-name" pattern="alpha" placeholder="Nom" minlength="2" maxlength="50" autofocus required>
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="prenom" class="important-field">Prénom</label><br />
+                            <input type="text" class="form-control col-md-6 text-capitalize animate__animated" id="contactPrenom" name="first-name" pattern="alpha" placeholder="Prénom" minlength="2" maxlength="50" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row hidden">
+                        <div class="form-group col-md-6">
+                            <label for="fonctionContact">Fonction au sein de l'entreprise</label>
+                            <input type="text" class="form-control animate__animated" id="fonctionContact" name="fonction-contact" placeholder="Fonction" minlength="2" maxlength="50">
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group col-md-4 hidden">
+                            <label for="telephoneFixe">Téléphone fixe</label>
+                            <input type="tel" class="form-control animate__animated" id="telephoneFixe" name="phone" placeholder="Téléphone fixe" minlength="2" maxlength="50">
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="telephonePortable" class="important-field">Téléphone portable</label><br />
+                            <input type="tel" class="form-control col-md-4 mask-tel-fr animate__animated" id="telephonePortable" name="mobile-phone" pattern="phone" placeholder="Numéro portable" minlength="2" maxlength="50" required>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group col-12">
+                            <label for="mail" class="important-field">Adresse mail</label><br />
+                            <input type="email" class="form-control col-md-8 animate__animated" id="mail" name="mail" placeholder="Adresse mail" minlength="2" maxlength="50" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3 hidden">
+                        <div class="col-12">
+                            <span>Photo</span>
+                        </div>
+                        <div class="custom-file col-md-4">
+                            <input type="file" class="custom-file-input" id="photoContact" name="photo_contact">
+                            <label class="custom-file-label" for="photoContact">Choisir une photo de profil</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group hidden">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="ok_mail" id="okMail" value="true" checked>
+                            <label class="form-check-label" for="okMail">
+                                J'accepte de recevoir des notifications par mail de l'application
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group d-flex flex-row-reverse">
+                        <div type="submit" id="btnPerso" class="btn bg-success-alt rounded-circle next-btn"><i class="text-light fas fa-arrow-right"></i></div>
+                    </div>
+
+                    <label class="d-flex flex-row-reverse notice-field">* Champs obligatoires</label>
+
+                </div>
+
+
+                <!--infos entreprise-->
+
+                <div class="step-2 hidden card p-2 animate__animated animate__backInDown">
+
+                    <p class="h4 mb-3 mt-3 color-text">Informations entreprise :</p>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="entrepriseNom" class="important-field">Nom de l'entreprise</label><br />
+                            <input type="text" class="form-control col-md-12 capitalize animate__animated" id="entrepriseNom" pattern="alphaDigits" name="company-name" placeholder="Nom de l'entreprise" minlength="2" maxlength="50" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="formeJuridique" class="important-field">Forme Juridique</label><br />
+                            <select class="form-control col-md-12" id="formeJuridique">
+                                <option value="EI">EI</option>
+                                <option value="EIRL">EIRL</option>
+                                <option value="EURL">EURL</option>
+                                <option selected="selected" value="SARL">SARL</option>
+                                <option value="SA">SA</option>
+                                <option value="SAS">SAS</option>
+                                <option value="SASU">SASU</option>
+                                <option value="SNC">SNC</option>
+                                <option value="SCOP">SCOP</option>
+                                <option value="SCA">SCA</option>
+                                <option value="SCS">SCS</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row hidden">
+
+                        <div class="form-group col-md-6">
+                            <label for="codeApe">Code APE *</label>
+                            <input type="text" class="form-control animate__animated" id="codeApe" name="code_ape" placeholder="Code APE" minlength="5" maxlength="5">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div id="divNumeroSiret" class="form-group col-md-6">
+                            <label for="numeroSiret" class="important-field">Numéro siret</label>
+                            <input type="text" class="form-control col-md-12 mask-siret animate__animated" id="numeroSiret" pattern="digits" name="siret-number" placeholder="Numéro siret" minlength="14" maxlength="14" required>
+                        </div>
+                        <div class="form-group col-md-6 hidden">
+                            <label for="numeroTva" class="important-field">Numéro TVA</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">FR</span>
+                                </div>
+                                <input type="text" class="form-control animate__animated" id="numeroTva" name="numero_tva" placeholder="Numéro TVA" minlength="11" maxlength="11">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row hidden">
+                        <div class="form-group col-md-6">
+                            <label for="siteWeb">Adresse site web</label>
+                            <input type="text" class="form-control animate__animated" id="siteWeb" name="site_web" placeholder="Adresse site web">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adresseEntreprise" class="important-field">Adresse entreprise</label>
+                        <input type="text" class="form-control col-md-12 animate__animated" id="adresseEntreprise" pattern="alphaDigits" name="company-adress" placeholder="Adresse de l'entreprise" minlength="2" maxlength="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="complementAdresseEntreprise">Complément d'adresse</label>
+                        <input type="text" class="form-control col-md-12 animate__animated" id="complementAdresseEntreprise" pattern="alphaDigits" name="company-adress2" placeholder="Complément d'adresse de votre entreprise" minlength="2" maxlength="100">
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="form-group col-sm-6 col-md-3">
+                            <label for="codePostalEntreprise" class="important-field">Code postal</label>
+                            <input type="number" class="form-control col-md-12 mask-postCode animate__animated" id="codePostalEntreprise" name="company-post-code" placeholder="00000" minlength="5" maxlength="5" required>
+                        </div>
+
+                        <div class="form-group col-sm-6 col-md-5">
+                            <label for="city" class="important-field">Ville</label>
+
+                            <select id="companyCity" name="company-city" class="form-control col-md-12 capitalize animate__animated" required>
+                                <option selected value="Paris">Paris</option>
+                                <option value="Laval">Laval</option>
+                                <option value="Louverné">Louverné</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6 col-md-4">
+                            <label for="pays" class="important-field">Pays</label>
+                            <select name="company-country" id="pays" class="form-control col-md-12 capitalize animate__animated" required>
+                                <option selected value="France">France</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="input-group mb-3 hidden">
+                        <div class="col-12">
+                            <span>Logo</span>
+                        </div>
+                        <div class="custom-file col-md-4">
+                            <input type="file" class="custom-file-input" id="logoEntreprise" name="logo_entreprise">
+                            <label class="custom-file-label" for="logoEntreprise">Choisir un logo</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group d-flex flex-row-reverse">
+                        <div id="btnCompany" class="btn bg-success-alt rounded-circle next-btn"><i class="text-light fas fa-arrow-right"></i></div>
+                        <div class="btn bg-success-alt rounded-circle previous-btn mr-2"><i class="text-light fas fa-arrow-left"></i></div>
+                    </div>
+
+                    <label class="d-flex flex-row-reverse notice-field">* Champs obligatoires</label>
+
+                </div>
+
+                <!-- password-->
+                <div class="step-3 card p-2 hidden animate__animated animate__backInDown">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="password" class="important-field">Mot de passe<span class="d-flex flex-row-reverse"><span id="colorPassword" class="bg-danger text-white">faible</span>Niveau sécurité password : </span></label>
+                            <div class="input-group">
+                                <input type="password" class="form-control col-10 animate__animated" id="password" placeholder="Mot de passe" aria-label="Nouveau Password" name="password" required minlength="5" maxlength="32">
+                                <div id="affichePassword" class="input-group-append">
+                                    <span class="input-group-text clickable">
+                                        <i class="fas fa-eye-slash fa-lg"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-11">
+                            <label for="confirmPassword" class="important-field">Confirmer mot de passe</label>
+                            <input type="password" class="form-control col-12 animate__animated" id="confirmPassword" name="confirmPassword" placeholder="Confirmer mot de passe" required minlength="5" maxlength="32">
+                        </div>
+                    </div>
+
+                    <div class="g-recaptcha" data-sitekey="la_clé_du_site"></div>
+
+                    <div class="form-group d-flex flex-row-reverse">
+                        <button id="submitCrea" type="submit" class="text-light btn bg-success-alt">S'inscrire</button>
+                        <div class="btn bg-success-alt rounded-circle previous-btn mr-2"><i class="text-light fas fa-arrow-left"></i></div>
+                    </div>
+
+                    <label class="d-flex flex-row-reverse notice-field">* Champs obligatoires</label>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+
+

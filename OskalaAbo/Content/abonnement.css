@@ -1,0 +1,53 @@
+﻿html {
+    scroll-behavior: smooth;
+}
+
+.legend-special {
+    width: auto;
+}
+
+.fieldset-blue {
+    border: 2px groove rgba(123, 217, 254, 0.8);
+}
+
+.fieldset-green {
+    border: 2px groove rgba(62, 255, 25, 0.8);
+}
+
+.fieldset-red {
+    border: 2px groove rgba(255, 25, 25, 0.8);
+}
+
+.formule {
+    transition: transform 300ms;
+}
+
+.formule:hover {
+    transform: scale(1.05);
+}
+
+.conditions {
+    font-size: x-small;
+}
+
+
+.bouton-heartbeat:hover {
+    animation: heartbeat 600ms;
+    animation-iteration-count: infinite;
+}
+
+@keyframes heartbeat {
+    25% {
+        transform: scale(1.02);
+    }
+
+    75% {
+        transform: scale(1.05);
+    }
+}
+
+@media (max-width: 992px) {
+    .offre-model{
+        margin-top: 5vh;
+    }
+}

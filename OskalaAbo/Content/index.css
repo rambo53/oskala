@@ -1,0 +1,17 @@
+﻿.fieldset {
+    border: 3px groove #ddd;
+}
+
+legend {
+    width: inherit;
+}
+
+.profil-picture{
+    max-width: 6vw;
+    max-height: 8vh;
+}
+
+.logo-company{
+    max-width:8vw;
+    max-height:7vh;
+}

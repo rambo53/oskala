@@ -1,0 +1,135 @@
+﻿@section localCssSection{
+    <link href="~/Content/index.css" rel="stylesheet" />
+}
+
+@section localJsSection{
+    <script src=""></script>
+}
+
+<!-- Liste des dossiers -->
+<div id="searchProjects" class="">
+    <div class="widget dash  " data-title="" data-bound="">
+        <div class="widget-title">
+            <div class="widget-header">
+                <span class="widget-desc-icon col-lg-12" data-i18n="page.projectslist">COMMANDES : LISTE DE TOUS LES DOSSIERS</span>
+                <!--<div class="widget-tools collapse-tool">
+                        <i class="fa fa-users fa-3x"></i>
+                    </div>-->
+            </div>
+            <div class="widget-content">
+                <div class="borderTheme "></div>
+                <div id="projects_search" class="col-lg-12 mb-2 bg-white p-0">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divInfoAccount" class="m-3">
+
+    <div class="row">
+        <div class="col-6 overflow-hidden">
+            <fieldset class="fieldset rounded bg-light">
+                <legend class="m-2">Informations personnelles</legend>
+
+                <div class="row m-2">
+                    <div class="col-9">
+                        <p>titre nom prenom</p>
+                        <p>num tel</p>
+                        <p>mail</p>
+                    </div>
+                    <div class="col-3">
+                        <img id="profilPicture" class="profil-picture" src="~/media/default_profile.png" />
+                    </div>
+                    <div class="d-flex flex-row-reverse col-12">
+                        <button class="btn btn-primary rounded-circle"><i class="fas fa-pencil-alt"></i></button>
+                    </div>  
+                </div>
+
+            </fieldset>
+        </div>
+
+        <div class="card col-6 overflow-hidden">
+            <fieldset class="">
+                <legend class="m-2">Informations entreprises</legend>
+
+                <div class="row m-2">
+                    <div class="col-4">
+                        <p>forme juridique + nom entreprise</p>
+                        <p>adresse</p>
+                        <p>code postal + ville</p>
+                    </div>
+                    <div class="col-5">
+                        <p><span class="font-weight-bold">Siret :</span>siret</p>
+                        <p><span class="font-weight-bold">TVA :</span>TVA</p>
+                        <p><span class="font-weight-bold">Site Web :</span>site web blabla blabla</p>
+                    </div>
+                    <div class="col-3">
+                        <img class="logo-company" src="~/media/logo_champeau.png" />
+                    </div>
+                    <div class="d-flex flex-row-reverse col-12">
+                        <button class="btn btn-primary rounded-circle"><i class="fas fa-pencil-alt"></i></button>
+                    </div>
+                </div>
+
+            </fieldset>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-12 overflow-hidden">
+            <fieldset class="fieldset rounded bg-light">
+                <legend class="m-2">Collaborateurs</legend>
+
+                <div class="row m-2">
+                    <div class="col-8 row">
+                        <div class="row col-12">
+                            <div class="col-5">
+                                <p>nom prenom</p>
+                            </div>
+                            <div class="col-5">
+                                <p>fonction au sein de l'entreprise'</p>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-primary rounded-circle"><i class="fas fa-pencil-alt"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-5">
+                                <p>nom prenom</p>
+                            </div>
+                            <div class="col-5">
+                                <p>fonction au sein de l'entreprise'</p>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-primary rounded-circle"><i class="fas fa-pencil-alt"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-5">
+                                <p>nom prenom</p>
+                            </div>
+                            <div class="col-5">
+                                <p>fonction au sein de l'entreprise'</p>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-primary rounded-circle"><i class="fas fa-pencil-alt"></i></button>
+                            </div>
+                        </div>
+
+                    </div>
+                   
+                    <div class="col-4 align-items-center">
+                            <p>diagramme nb contact / total dispo</p>
+                    </div>
+                </div>
+
+            </fieldset>
+        </div>
+    </div>
+
+</div>

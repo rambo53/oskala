@@ -1,0 +1,1034 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+
+@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<style>
+    html {
+        position: relative;
+        min-height: 100%;
+        height: 100%;
+    }
+
+    body {
+        height: 100%;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    .invisible {
+        visibility: hidden;
+    }
+
+    .wrapper {
+        display: flex;
+    }
+
+    .mxw500 {
+        max-width: 500px !important;
+    }
+
+    .body-small .filigran {
+        background-image: none;
+        display: none;
+    }
+
+    .body-small .inner-bg {
+        padding: 100px 0 70px;
+    }
+
+    .modal-title {
+        color: whitesmoke;
+    }
+
+    .bg-blue {
+        background-color: #225072;
+    }
+
+    .bg-secondary {
+        background-color: #2B6B87;
+    }
+
+    .bg-white {
+        background-color: #ffffff;
+    }
+
+    .bg-slide1 {
+        background-image: url(../media/banner-bg.jpg);
+        background-attachment: scroll;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: white;
+        background-size: cover;
+    }
+
+    .bg-success-alt {
+        background-color: #b0c915;
+    }
+
+    .bg-footer {
+        background-color: rgba(255, 255, 255, 0.25) !important;
+    }
+
+
+    .alt-color {
+        background-color: #2B6B87 !important;
+    }
+
+    .card {
+        border: 0;
+        margin-bottom: 30px;
+        margin-top: 30px;
+        border-radius: 6px;
+        color: #333;
+        background: #fff;
+        width: 100%;
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,.14);
+    }
+
+    .card-header {
+        margin: 0 15px;
+        padding: .75rem 1.25rem !important;
+        position: relative;
+    }
+
+    .card-disabled {
+        opacity: 0.33;
+    }
+</style>
+
+<style>
+    .md-skin .main-content {
+        background-color: rgba(208, 208, 208, 0.3);
+    }
+
+    .md-skin .card {
+        box-shadow: 1px 3px 4px 1px rgb(0 0 0 / 10%);
+        cursor: pointer;
+        border-top: 7px solid #014051;
+    }
+
+    .md-skin .page-footer {
+        background-color: #4a757e;
+        z-index: 999;
+    }
+
+    .md-skin .help-block, .notice-field {
+        color: rgb(227 79 121);
+    }
+
+    .md-skin .page-footer {
+        color: white;
+    }
+
+    .md-skin .grecaptcha-badge {
+        z-index: 99999;
+    }
+</style>
+
+
+
+
+<link href="/Content/subscription.css" rel="stylesheet" />
+<style>
+    .special-visi {
+        height: 32px;
+    }
+
+    .offre-container {
+        border: 1px dashed black;
+    }
+
+    .card .formule-picture {
+
+        height: 128px !important;
+        margin-right: auto;
+        margin-left: auto;
+
+        background-size: cover;
+        overflow: hidden;
+        background-repeat: no-repeat;
+        background-position: center center !important;
+
+    }
+
+    .formule-picture.icon96 {
+        width: 96px !important;
+        height: 96px !important;
+    }
+
+    .formule-picture.circle {
+        border-radius: 50%;
+        margin: 10px !important;
+        margin-left: -15px;
+    }
+
+    .formule-picture.rounded {
+        margin-bottom: 10px !important;
+        margin-left: 5px;
+        margin-top: 10px;
+    }
+
+    .formule-item32 {
+        height: 32px;
+        line-height: 32px;
+    }
+
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src="/bundles/modernizr?v=inCVuEFe6J4Q07A0AcRsbJic_UE5MwpRMNGcOtk94TE1"></script>
+
+<script src="/bundles/jquery?v=MdBy4FyfBqTdu1XE4GtuPye9xgXZ0MZvldFctUl7G6M1"></script>
+
+<script src="/bundles/bootstrap?v=UNLUNZiF991zZ80zXE7IdsTVHjStExr6y03BN2oO8lk1"></script>
+
+
+<script src="/Scripts/common.js?v=4"></script>
+<script src="/Scripts/jquery.mask-1.14.16.min.js"></script>
+
+
+<script src="/Scripts/subscription.js"></script>
+<script src="/Scripts/sweetalert2.all.min.js"></script>
+<script src="/Scripts/purl.js"></script>
+
+<script>
+
+    if (/(MSIE\ [0-9]{1})/i.test(navigator.userAgent) || (/(Trident\/[7]{1})/i.test(navigator.userAgent))) {
+        alert("L'accès à ce portail est réservé à un navigateur moderne (Chrome/Firefox/Edge Chromium). Les versions antérieures d'Internet Explorer ne sont pas supportées.");
+        window.location = "https://www.google.com/intl/fr_fr/chrome/";
+    }
+
+    function updateSidebar() {
+        console.debug($(document).width());
+        if ($(document).width() < 768) {
+            //$('#sidebarCollapse').removeClass("hidden");
+            $('#sidebar').addClass("floating-sidebar");
+            $('#sidebar').css("height", "calc(100% - " + ($('.navbar').outerHeight() + $('footer').outerHeight()) + "px)");
+        }
+        else {
+            $('#sidebar').removeClass("active");
+            //  $('#sidebarCollapse').addClass("hidden");
+            $('#sidebar').removeClass("floating-sidebar");
+            $('#sidebar').css("height", "");
+        }
+    }
+
+    function loadCssFile(url, successCallback, failureCallback) {
+
+
+        $("<link/>", {
+            rel: "stylesheet",
+            type: "text/css",
+            href: url
+        }).appendTo("head");
+
+        /* $.when.apply($,
+             $.map(urls, function (url) {
+                 return $.get(url, function (css) {
+                     $("<style>" + css + "</style>").appendTo("head");
+                 });
+             })
+         ).then(function () {
+             if (typeof successCallback === 'function') successCallback();
+         }).fail(function () {
+             if (typeof failureCallback === 'function') failureCallback();
+         });*/
+
+    }
+
+    /*Chargements*/
+    $(document).ready(function () {
+
+        var user = {};
+        var token = localStorage.getItem("token");
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+
+
+        $.ajaxSetup({
+            url: "",
+            timeout: 0,
+            headers: headers,
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            /*beforeSend: function (xhr, options) {
+                if (options.type && options.type.toLowerCase() !== 'get' && typeof (options.data) === 'string' && options.url.indexOf("?__RequestVerificationToken=") < 0 && options.url.indexOf("&__RequestVerificationToken=") < 0) {
+                    if (options.url.indexOf('?') < 0) {
+                        options.url += '?';
+                    }
+                    else {
+                        options.url += '&';
+                    }
+                    options.url += "__RequestVerificationToken=" + encodeURIComponent($('input[name=__RequestVerificationToken]').val());
+                }
+            },*/
+            /*xhrFields: {
+                withCredentials: true
+            },*/
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //trapAjaxErrors(XMLHttpRequest, textStatus, errorThrown);
+            },
+            async: true
+        });
+
+
+        var domain_name = document.location.hostname;
+        if (!domain_name.startsWith("pandora")) {
+            loadCssFile("../Content/" + domain_name + ".css");
+        }
+
+        if (typeof localPageInit == 'function') {
+
+            //localPageInit(user);
+
+            $("").closest("li").addClass("active");
+
+        }
+
+
+
+        $(window).resize(function () {
+            updateSidebar();
+        });
+        $(window).resize();
+
+
+    });
+
+</script>
+
+
+
+<script>
+    //function localPageInit() {
+        //var model = JSON.parse('null');
+
+        /*$(document).ready(function () {
+
+
+            $("#changePeriod").click(function () {
+
+                let isChecked = $(this).is(":checked");
+                if (isChecked) {
+                    $("#year").addClass("text-primary").removeClass("opa-switch");
+                    $("#month").removeClass("text-primary").addClass("opa-switch");
+                }
+                else {
+                    $("#year").removeClass("text-primary").addClass("opa-switch");
+                    $("#month").addClass("text-primary").removeClass("opa-switch");
+                }
+                getSubscriptions(".offre-model", isChecked ? 1 : 0);
+            });
+
+            $("#changePeriod").click();
+
+
+
+
+        });*/
+
+        /*var obj1 = {
+            id: 1,
+            name: 'Pinhead',
+            isSpecial: false,
+            specialDesc: "Offre du moment",
+            cBenefits: ["Planning", "Télégestion"],
+            cItems: ["option 1", "option 2", "option 3"],
+            mensualPrice: 29,
+            description: "No tears, please. It's a waste of good suffering...",
+            avatar: "https://fr.techtribune.net/wp-content/uploads/2021/08/3867530-hellraiser-1021x580.jpg",
+            offerThemeClass: "light-green-500",
+        };*/
+    
+
+
+    var objJson = {
+        ID: 1,
+        Name: "Oskala RDI Starter",
+        Description: "Sans engagement",
+        DescriptionAlt: "Démarrez avec l'essentiel! Planifiez vos interventions et réalisez vos comptes-rendus pour vos clients.",
+        Lang: "FR",
+        Url: "",
+        EmbedVideo: "",
+        Avatar: "https://media-exp1.licdn.com/dms/image/C4D22AQG_Xl_4BmAZyg/feedshare-shrink_800/0/1626509495348?e=1645056000&v=beta&t=wT16X8cmozVxOuw_35Wj0a_CsM-nWfkyaVTQjdidqQ8",
+        IsSpecial: false,
+        SpecialDesc: "",
+        Active: true,
+        StartDate: "0001-01-01T00:00:00Z",
+        EndDate: "0001-01-01T00:00:00Z",
+        MaxAccounts: -1,
+        MaxStorageGB: -1,
+        MaxFairUseTransactions: -1,
+        IsRestricted: false,
+        RestrictClientsIDs: null,
+        RequireProviderValidation: false,
+        OnlineBooking: false,
+        OnlineCancel: false,
+        EngagementCycleID: 1,
+        EngagementCycleName: "Mensuel",
+        InvoiceCycleID: -1,
+        IncludeTrialDays: -1,
+        TemplateSubscriptionID: -1,
+        CBenefits: [
+            {
+                BenefitID: 100,
+                BenefitName: "Planning",
+                BenefitDesc: "",
+                Avatar: "../Media/successx48.png",
+                BenefitTag: "ABO",
+                ProductID: 1,
+                BenefitTypeID: 1,
+                BenefitParentID: 100,
+                IsOption: false,
+                PriceID: 2,
+                LinkID: 1,
+                IndexDisplay: 0,
+                VATID: 100,
+                TarifTypeID: 0,
+                FromQty: 0,
+                ToQty: 999,
+                IsBillable: false,
+                IncludeMode: 1,
+                CycleID: 1,
+                UPET: 0,
+                PET: 0,
+                VATC: 0.2,
+                VAT: 0,
+                PATI: 0
+            },
+            {
+                BenefitID: 101,
+                BenefitName: "Rapport/Compte Rendu",
+                BenefitDesc: "",
+                Avatar: "../Media/successx48.png",
+                BenefitTag: "ABO",
+                ProductID: 1,
+                BenefitTypeID: 2,
+                BenefitParentID: 101,
+                IsOption: false,
+                PriceID: 2,
+                LinkID: 1,
+                IndexDisplay: 0,
+                VATID: 100,
+                TarifTypeID: 0,
+                FromQty: 0,
+                ToQty: 999,
+                IsBillable: false,
+                IncludeMode: 1,
+                CycleID: 1,
+                UPET: 0,
+                PET: 0,
+                VATC: 0.2,
+                VAT: 0,
+                PATI: 0
+            },
+            {
+                BenefitID: 102,
+                BenefitName: "Application Android",
+                BenefitDesc: "",
+                Avatar: "../Media/successx48.png",
+                BenefitTag: "ABO",
+                ProductID: 1,
+                BenefitTypeID: 3,
+                BenefitParentID: 101,
+                IsOption: false,
+                PriceID: 2,
+                LinkID: 1,
+                IndexDisplay: 0,
+                VATID: 100,
+                TarifTypeID: 0,
+                FromQty: 0,
+                ToQty: 999,
+                IsBillable: false,
+                IncludeMode: 1,
+                CycleID: 1,
+                UPET: 0,
+                PET: 0,
+                VATC: 0.2,
+                VAT: 0,
+                PATI: 0
+            }
+        ],
+        CFiles: null,
+        OfferThemeClass: "white-50",
+        OfferThemeColor: "green",
+        SiteID: 53000,
+        CPrices: [              
+                {
+                    BenefitID: 11,
+                    BenefitName: "Licence Gestionnaire Partiel",
+                    BenefitNameAlt: "Pack 5 Utilisateurs inclus",
+                    BenefitDesc: "Les gestionnaires sont les personnes en charge de la planification et du traitement des rapports",
+                    Avatar: "../Media/successx48.png",
+                    BenefitTag: "LIC",
+                    ProductID: 1,
+                    BenefitTypeID: 4,
+                    BenefitParentID: 11,
+                    IsOption: false,
+                    PriceID: 2,
+                    LinkID: 2,
+                    IndexDisplay: 0,
+                    VATID: 100,
+                    TarifTypeID: 2,
+                    FromQty: 1,
+                    ToQty: 1,
+                    IsBillable: true,
+                    IsBundle: false,
+                    IncludeMode: 1,
+                    CycleID: 1,
+                    UPET: 47,
+                    PET: 47,
+                    VATC: 0.2,
+                    VAT: 9.4,
+                    PATI: 56.4
+                },
+                {
+                    BenefitID: 12,
+                    BenefitName: "Licence Classique / Intervenant",
+                    BenefitNameAlt: "Pack 5 Utilisateurs inclus",
+                    BenefitDesc: "Les intervenants/techniciens sont les personnes ressources",
+                    Avatar: "../Media/successx48.png",
+                    BenefitTag: "LIC",
+                    ProductID: 1,
+                    BenefitTypeID: 5,
+                    BenefitParentID: 12,
+                    IsOption: false,
+                    PriceID: 2,
+                    LinkID: 2,
+                    IndexDisplay: 0,
+                    VATID: 100,
+                    TarifTypeID: 3,
+                    FromQty: 1,
+                    ToQty: 4,
+                    IsBillable: true,
+                    IsBundle: false,
+                    IncludeMode: 1,
+                    CycleID: 1,
+                    UPET: 19,
+                    PET: 19,
+                    VATC: 0.2,
+                    VAT: 3.8,
+                    PATI: 22.8
+                }
+            ],
+            CItems: [],
+            HasOptions: false,
+            HasModules: true,
+            HasBundle: false
+    };
+    var objJson2 = {
+        ID: 1,
+        Name: "Oskala RDI Starter",
+        Description: "Sans engagement",
+        DescriptionAlt: "Démarrez avec l'essentiel! Planifiez vos interventions et réalisez vos comptes-rendus pour vos clients.",
+        Lang: "FR",
+        Url: "",
+        EmbedVideo: "",
+        Avatar: "https://media-exp1.licdn.com/dms/image/C4D22AQG_Xl_4BmAZyg/feedshare-shrink_800/0/1626509495348?e=1645056000&v=beta&t=wT16X8cmozVxOuw_35Wj0a_CsM-nWfkyaVTQjdidqQ8",
+        IsSpecial: false,
+        SpecialDesc: "",
+        Active: true,
+        StartDate: "0001-01-01T00:00:00Z",
+        EndDate: "0001-01-01T00:00:00Z",
+        MaxAccounts: -1,
+        MaxStorageGB: -1,
+        MaxFairUseTransactions: -1,
+        IsRestricted: false,
+        RestrictClientsIDs: null,
+        RequireProviderValidation: false,
+        OnlineBooking: false,
+        OnlineCancel: false,
+        EngagementCycleID: 1,
+        EngagementCycleName: "Mensuel",
+        InvoiceCycleID: -1,
+        IncludeTrialDays: -1,
+        TemplateSubscriptionID: -1,
+        CBenefits: [
+            {
+                BenefitID: 100,
+                BenefitName: "Planning",
+                BenefitDesc: "",
+                Avatar: "../Media/successx48.png",
+                BenefitTag: "ABO",
+                ProductID: 1,
+                BenefitTypeID: 1,
+                BenefitParentID: 100,
+                IsOption: false,
+                PriceID: 2,
+                LinkID: 1,
+                IndexDisplay: 0,
+                VATID: 100,
+                TarifTypeID: 0,
+                FromQty: 0,
+                ToQty: 999,
+                IsBillable: false,
+                IncludeMode: 1,
+                CycleID: 1,
+                UPET: 0,
+                PET: 0,
+                VATC: 0.2,
+                VAT: 0,
+                PATI: 0
+            },
+            {
+                BenefitID: 101,
+                BenefitName: "Rapport/Compte Rendu",
+                BenefitDesc: "",
+                Avatar: "../Media/successx48.png",
+                BenefitTag: "ABO",
+                ProductID: 1,
+                BenefitTypeID: 2,
+                BenefitParentID: 101,
+                IsOption: false,
+                PriceID: 2,
+                LinkID: 1,
+                IndexDisplay: 0,
+                VATID: 100,
+                TarifTypeID: 0,
+                FromQty: 0,
+                ToQty: 999,
+                IsBillable: false,
+                IncludeMode: 1,
+                CycleID: 1,
+                UPET: 0,
+                PET: 0,
+                VATC: 0.2,
+                VAT: 0,
+                PATI: 0
+            },
+            {
+                BenefitID: 102,
+                BenefitName: "Application Android",
+                BenefitDesc: "",
+                Avatar: "../Media/successx48.png",
+                BenefitTag: "ABO",
+                ProductID: 1,
+                BenefitTypeID: 3,
+                BenefitParentID: 101,
+                IsOption: false,
+                PriceID: 2,
+                LinkID: 1,
+                IndexDisplay: 0,
+                VATID: 100,
+                TarifTypeID: 0,
+                FromQty: 0,
+                ToQty: 999,
+                IsBillable: false,
+                IncludeMode: 1,
+                CycleID: 1,
+                UPET: 0,
+                PET: 0,
+                VATC: 0.2,
+                VAT: 0,
+                PATI: 0
+            }
+        ],
+        CFiles: null,
+        OfferThemeClass: "white-50",
+        OfferThemeColor: "green",
+        SiteID: 53000,
+        CPrices: [
+            {
+                Avatar: "../Media/successx48.png",
+                BenefitDesc: "",
+                BenefitID: 15,
+                BenefitName: "Pack Utilisateurs",
+                BenefitNameAlt: "Pack 5 Utilisateurs inclus",
+                BenefitParentID: 14,
+                BenefitTag: "LIC",
+                BenefitTypeID: 6,
+                CycleID: 1,
+                FromQty: 5,
+                IncludeMode: 1,
+                IndexDisplay: 0,
+                IsBillable: true,
+                IsBundle: true,
+                IsOption: false,
+                LinkID: 2,
+                PATI: 56.4,
+                PET: 47,
+                PriceID: 2,
+                PriceName: "Tarif Starter",
+                ProductID: 1,
+                TarifTypeDesc: "Pack Licences",
+                TarifTypeID: 6,
+                ToQty: 5,
+                UPET: 47,
+                VAT: 9.4,
+                VATC: 0.2,
+                VATID: 100
+            },
+            {
+                BenefitID: 11,
+                BenefitName: "Licence Gestionnaire Partiel",
+                BenefitNameAlt: "Pack 5 Utilisateurs inclus",
+                BenefitDesc: "Les gestionnaires sont les personnes en charge de la planification et du traitement des rapports",
+                Avatar: "../Media/successx48.png",
+                BenefitTag: "LIC",
+                ProductID: 1,
+                BenefitTypeID: 4,
+                BenefitParentID: 11,
+                IsOption: false,
+                PriceID: 2,
+                LinkID: 2,
+                IndexDisplay: 0,
+                VATID: 100,
+                TarifTypeID: 2,
+                FromQty: 1,
+                ToQty: 1,
+                IsBillable: true,
+                IsBundle: true,
+                IncludeMode: 1,
+                CycleID: 1,
+                UPET: 47,
+                PET: 47,
+                VATC: 0.2,
+                VAT: 9.4,
+                PATI: 56.4
+            },
+            {
+                BenefitID: 12,
+                BenefitName: "Licence Classique / Intervenant",
+                BenefitNameAlt: "Pack 5 Utilisateurs inclus",
+                BenefitDesc: "Les intervenants/techniciens sont les personnes ressources",
+                Avatar: "../Media/successx48.png",
+                BenefitTag: "LIC",
+                ProductID: 1,
+                BenefitTypeID: 5,
+                BenefitParentID: 12,
+                IsOption: false,
+                PriceID: 2,
+                LinkID: 2,
+                IndexDisplay: 0,
+                VATID: 100,
+                TarifTypeID: 3,
+                FromQty: 1,
+                ToQty: 4,
+                IsBillable: true,
+                IsBundle: true,
+                IncludeMode: 1,
+                CycleID: 1,
+                UPET: 19,
+                PET: 19,
+                VATC: 0.2,
+                VAT: 3.8,
+                PATI: 22.8
+            }
+        ],
+        CItems: [],
+        HasOptions: false,
+        HasModules: true,
+        HasBundle: true
+    };
+
+    $(document).ready(function () {
+
+        var model = new Array();
+        model.push(objJson);
+        model.push(objJson2);
+            
+
+        var template = $("#offreModel");
+        var parentNode = $("#div-offre");
+
+        parentNode.find(".offre-clone").remove();
+
+        const idBundle = 6;
+
+        $(model).each(function (i, obj) {
+
+
+            obj.CPrices = $.grep(obj.CPrices, function (f, i) {
+                return f.IsBillable && f.TarifTypeID > 0;
+            });
+          
+
+
+            obj.CItems = $.grep(obj.CItems, function (f, i) {
+                return f.IsOption;
+            });
+
+            obj.HasOptions = obj.CItems && obj.CItems.length > 0;
+
+            obj.CBenefits = $.grep(obj.CBenefits, function (f, i) {
+                return !f.IsOption && !f.IsBillable && f.TarifTypeID <= 0;
+            });
+
+            obj.HasModules = obj.CBenefits && obj.CBenefits.length > 0;
+
+            var tempClone = template.clone();
+
+            
+
+            tempClone.data("obj", obj);
+            bindSubscriptionItems(tempClone, obj);
+            tempClone.removeClass("hidden offre-model").addClass("offre-clone");
+            /*if (filterCyleID == 0 ? obj.EngagementCycleID == 1 : obj.EngagementCycleID > 1) {
+
+            } else {
+                tempClone.addClass("card-disabled");
+                tempClone.find(".clickBtn").addClass("hidden").prop("disabled", true);
+            }*/
+
+            parentNode.append(tempClone);
+        });
+
+
+
+
+
+        function bindSubscriptionItems(selecteur, obj) {
+            //itération sur mes data bind prop dans mon objet cloné
+            if (obj) {
+                console.log("New Bind on " + selecteur);
+                $(selecteur).find('[data-bind-prop]').each(function (j, el) {
+
+                    const currentProp = $(this).attr('data-bind-prop');
+                    if (currentProp.length > 0 && obj.hasOwnProperty(currentProp)) {
+                        let target = "";
+                        let prop = obj[currentProp];
+
+                        //itération sur ma prop si c'est une collection
+
+                        target = $(el).attr('data-bind-src') || "";
+                        switch (target) {
+                            case "": $(this).text(prop); break;
+                            case "text": $(this).text(prop); break;
+                            case "html": $(this).html(prop); break;
+                            case "class": $(this).addClass(prop); break;
+                            case "model":
+                                var modelItem = $(el).find(".item-model").first();
+                                $(prop).each(function (k, itemObj) {
+                                    var cloneItem = $(modelItem).clone();
+                                    cloneItem.removeClass("item-model hidden");
+                                    cloneItem.find("[data-bind-prop-item]").each(function () {
+                                        $(this).attr("data-bind-prop", $(this).attr("data-bind-prop-item"));
+                                        $(this).removeAttr("data-bind-prop-item");
+                                    });
+                                    $(el).append(cloneItem);
+                                    bindSubscriptionItems(cloneItem, itemObj);
+                                });
+                                break;
+                            case "style-color": $(this).css("color", prop); break;
+                            case "style-bg-color": $(this).css("background-color", prop); break;
+                            case "style-bg": $(this).css("background-image", "url(" + prop + ")"); break;
+                            case "show": prop ? $(this).removeClass("hidden") : $(this).addClass("hidden"); break;
+                            case "hide": prop ? $(this).addClass("hidden") : $(this).removeClass("hidden"); break;
+                            default: $(this).attr(target, prop); break;
+                        }
+
+                    } else {
+                        console.log("Property not found " + currentProp);
+                        console.debug(obj);
+                    }
+                });
+            } else {
+                console.log("Object not found ");
+            }
+        }
+    });
+
+    //}
+</script>
+
+<style>
+
+    .bundle[data-bind-comparaison="6"] .license {
+        display: none !important;
+    }
+
+    .bundle[data-bind-comparaison="6"] {
+        display: inline-block !important;
+    }
+
+    .bundle[data-bind-comparaison="3"] .license, .bundle[data-bind-comparaison="2"] .license {
+        display: inline-block !important;
+    }
+
+    .bundle[data-bind-comparaison="3"] .bundle-price, .bundle[data-bind-comparaison="2"] .bundle-price {
+        display: none !important;
+    }
+
+
+</style>
+
+<div id="div-principale-formule" class="container-fluid h-100 ">
+
+    <div class="m-4 text-center">
+        <h2>Développez votre métier avec la formule qui vous convient</h2>
+
+    </div>
+
+
+    <div class="d-flex m-4 switch-size">
+        <span id="month" class="m-1 h4 mr-2 font-weight-bold opa-switch">Mensuel</span>
+        <label class="switch">
+            <input id="changePeriod" type="checkbox" checked="checked" value="1">
+            <span class="slider round"></span>
+        </label>
+        <span id="year" class="m-1 ml-2 h4 font-weight-bold text-primary">Annuel</span>
+    </div>
+
+    <div id="div-offre" class="offre-container row d-flex justify-content-lg-around">
+
+
+
+        <!-- modele offre -->
+        <div id="offreModel" class="offre-model formule hidden card hidden col-lg-3 col-12 p-0 ">
+            <div data-bind-prop="Avatar" data-bind-src="style-bg" class="card-img-top formule-picture icon96 rounded" alt="formule-picture"></div>
+
+            <div class="card-img-overlay  text-center m-0 p-0">
+                <!--card-img-overlay-->
+                <!--card-header-->
+
+                <div id="special" data-bind-prop="IsSpecial" data-bind-src="show" class="row special-visi text-center text-warning rounded invisible">
+                    <span data-bind-prop="SpecialDesc" class="p-2 col-4 bg-blue font-weight-bolder"></span>
+                </div>
+
+                <div class=" row d-flex justify-content-end">
+
+                    <div data-bind-prop="OfferThemeColor" class="col-8" data-bind-src="style-color">
+                        <h2 data-bind-prop="Name" class=" name-model font-weight-bolder ml-3"></h2>
+                        <h5 data-bind-prop="Description" class="text-dark"></h5>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+
+            <div class="card-body border-top" data-bind-prop="OfferThemeClass" data-bind-src="class">
+
+                <p><small data-bind-prop="DescriptionAlt"></small></p>
+
+                <div class="d-inline-block text-center text-light w-100 mb-2 rounded" data-bind-prop="OfferThemeColor" data-bind-src="style-bg-color">
+                    <div data-bind-prop="CPrices" class="p-1 font-weight-bolder" data-bind-src="model">
+
+                        <div class="item-model">
+
+                            <div data-bind-prop="IsBundle" class="hidden" data-bind-src="show">
+
+                                <div data-bind-prop="TarifTypeID" class="bundle" data-bind-src="data-bind-comparaison">
+
+                                    <div class="d-flex bundle-price align-items-center row item-pack">
+                                        <div class="text-center mx-auto h1 font-weight-bolder">
+                                            <span data-bind-prop="UPET" data-bind-src="text"></span>
+                                            <span class="gray-300">€ HT/mois</span>
+                                        </div>
+                                    </div>
+
+                                    <div data-bind-prop="BenefitNameAlt" class="item-pack bundle-price bg-light text-dark h4 font-weight-bolder mt-2 p-2 col-12" data-bind-src="text"></div>
+                                    <div class="license">
+                                        <span data-bind-prop="ToQty" class="item-pack" data-bind-src="text"></span>
+                                        <span data-bind-prop="BenefitName" class="item-pack" data-bind-src="text"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div data-bind-prop="IsBundle" class="hidden" data-bind-src="hide">
+                                <div data-bind-prop="TarifTypeID" class="per-user" data-bind-src="data-bind-comparaison">
+                                    <small class="font-weight-bolder">
+                                        <span class="card-text" data-bind-prop="BenefitName" data-bind-src="text"></span>
+                                        (<span data-bind-prop="UPET" data-bind-src="text"></span>
+                                        <span>€ HT/mois</span>)
+                                    </small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------- hasbundle = false ---------------------------------------------------------------->
+                <!--<div data-bind-prop="HasBundle" data-bind-src="hide">
+
+        <p><strong class="card-title">Licences</strong></p>
+
+        <div data-bind-prop="OfferThemeColor" data-bind-src="style-color">
+            <div data-bind-prop="CPrices" data-bind-src="model">
+                <div class="item-model license-item d-inline-block w-100 mb-2 hidden" formule-item32">
+                    <small class="font-weight-bolder">
+                        <span data-bind-prop="FromQty" class="" data-bind-src="text"></span>
+                        <span class="card-text" data-bind-prop="BenefitName" data-bind-src="text"></span>
+                        (<span data-bind-prop="UPET" data-bind-src="text"></span>
+                        <span>€ HT/mois</span>)
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>-->
+                <!------------------------------------------------------------------------- hasbundle = true ---------------------------------------------------------------->
+                <!--<div data-bind-prop="HasBundle" data-bind-src="show">
+
+        <p><strong class="card-title">Pack</strong></p>
+
+        <div data-bind-prop="OfferThemeColor" class="rounded" data-bind-src="style-bg-color">
+
+            <div data-bind-prop="CPrices" class="text-center p-1 text-light font-weight-bolder" data-bind-src="model">
+
+                <div class="item-model d-inline-block w-100 mb-2 hidden">
+                    <div data-bind-prop="TarifTypeID" data-bind-src="data-bind-comparaison">
+
+                        <div class="mt-4 mb-4 d-flex align-items-center row item-pack" style="height: 4rem;">
+                            <div class="text-center mx-auto h1 font-weight-bolder">
+                                <span data-bind-prop="UPET" data-bind-src="text"></span>
+                                <span class="gray-300">€ HT/mois</span>
+                            </div>
+                        </div>
+
+                        <span data-bind-prop="BenefitNameAlt" class="item-pack bg-light text-dark h4 font-weight-bolder mt-2 p-2 col-12" data-bind-src="text"></span>
+
+                        <span data-bind-prop="ToQty" class="item-pack" data-bind-src="text"></span>
+                        <span data-bind-prop="BenefitName" class="item-pack" data-bind-src="text"></span>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>-->
+                <!------------------------------------------------------------------------- fin hasbundle = true ---------------------------------------------------------------->
+
+
+                <p><strong class="card-title" data-bind-prop="HasModules" data-bind-src="show">Modules inclus</strong></p>
+
+                <div class="pb-2" data-bind-prop="CBenefits" data-bind-src="model">
+                    <div class="item-model d-inline-block w-100 mb-2 hidden" formule-item32"><img data-bind-prop-item="Avatar" data-bind-src="src" class="float-left border rounded-circle formule-item32" /><div class="card-text" data-bind-prop-item="BenefitName"></div></div>
+                </div>
+
+                <p><strong class="card-title" data-bind-prop="HasOptions" data-bind-src="show">Options</strong></p>
+
+                <div data-bind-prop="CItems" data-bind-src="model">
+                    <div class="item-model d-inline-block w-100 mb-2 hidden" formule-item32"><img data-bind-prop-item="Avatar" data-bind-src="src" class="float-left border rounded-circle formule-item32" /><div class="card-text" data-bind-prop-item="BenefitName"></div></div>
+                </div>
+
+
+
+                <div class="mt-2 d-flex justify-content-around align-items-center">
+                    <div class="col-6">
+                        <p class="details-model text-dark font-weight-bold btn"><a href="#details">Afficher détails</a></p>
+                    </div>
+                    <div class="col-6">
+                        <a data-bind-prop="ID" data-bind-src="data-bind-id" href="../Landing/CreateContact?id=" class="clickBtn ml-5 btn btn-primary bouton-heartbeat">S'abonner</a>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+            </div>

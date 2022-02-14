@@ -1,0 +1,117 @@
+﻿
+html, body {
+    /*height: 100%;*/
+}
+
+.bg-slide1 {
+    background-image: url("../media/champeau_siege_blur.jpg") !important;
+    background-attachment: scroll;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: cover;
+}
+
+.bg-footer {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+
+#loginDialogContainer {
+    box-shadow: 1px 1px 10px #888888;
+    border: 1px solid rgba(22,92,161,0.3);
+    border-radius: 6px !important;
+}
+
+.body-small #loginDialogContainer {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.body-small .filigran {
+    background-image: none;
+    display: none;
+}
+
+.body-small .inner-bg {
+    padding: 100px 0 70px;
+}
+
+.modal-title {
+    color: whitesmoke;
+}
+
+.card-header {
+    padding: .75rem 1.25rem !important;
+}
+
+.mxw500 {
+    max-width: 500px !important;
+}
+
+.c-start {
+    justify-content: flex-start !important;
+}
+
+.c-center {
+    justify-content: center !important;
+}
+
+.c-end {
+    justify-content: flex-end !important;
+}
+
+.c-fill-h {
+    height: 100% !important;
+    padding: 15px;
+}
+
+.c-alpha .card {
+    background-color: rgba(255,255,255,0.6) !important;
+    color: black !important;
+}
+
+.c-alpha .alt-color {
+    background-color: rgba(43,107,135,0.85) !important;
+}
+
+.c-alpha.c-dark .alt-color {
+    background-color: rgba(255,255,255,0.2) !important;
+}
+
+.c-alpha .form-control {
+    // opacity:0.5;
+}
+
+.c-alpha button {
+    // opacity:0.85;
+}
+
+.c-dark .alt-color {
+    background-color: black !important;
+}
+
+.c-alpha.c-dark .text-white {
+    color: black !important;
+}
+
+.c-dark .form-group a {
+    color: black !important;
+}
+
+.c-dark .input-group-text {
+    background-color: black;
+    color: white;
+}
+
+.c-dark .form-control {
+    background-color: black !important;
+}
+
+.c-dark button {
+    background-color: rgba(109,110,110,1);
+}
+
+.c-dark .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: rgba(109,110,110,1);
+}

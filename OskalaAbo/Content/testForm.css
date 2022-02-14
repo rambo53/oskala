@@ -1,0 +1,101 @@
+﻿form {
+    
+}
+
+label {
+    width: 20vw;
+    display: inline-block;
+}
+
+.main-margin {
+    margin: 5vh 10vw 0vh 10vw;
+}
+
+.input_non_lie {
+    margin-top: 2vh;
+}
+
+input, select {
+    float: right;
+}
+
+.fieldset_form {
+    color: rgba(133,64,146,255);
+    border: 2px solid rgba(172,214,36,255);
+    font-size: larger;
+    font-weight: bold;
+    border-radius: 1em;
+}
+
+input, textarea, select, button {
+    border-radius: 0.5em;
+}
+
+.textarea_form, select {
+    border: 2px solid rgba(172,214,36,255);
+}
+
+.input_form {
+    width: 10vw;
+    float: right;
+    border-color: rgba(172,214,36,255);
+}
+
+    .input_form:focus, .textarea_form:focus, select:focus {
+        outline: none;
+        border: 2px solid rgba(172,214,36,255);
+        background-color: rgba(172,214,36,0.2);
+    }
+
+.submit {
+    background-color: rgba(133,64,146,255);
+    border-color: rgba(133,64,146,255);
+    color: rgba(172,214,36,255);
+    font-weight: bold;
+}
+
+    .submit:hover {
+        transform: scale(1.2);
+        cursor: pointer;
+    }
+
+
+
+
+.radio_modif {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding-left: 25px;
+    margin-right: 35px;
+    margin-top: 0.5vh;
+    border-radius: 10px;
+    width: 5vw;
+}
+
+input[type=radio] {
+    display: none;
+}
+
+label:before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 100%;
+    border: 2px solid rgba(133,64,146,255);
+    position: absolute;
+    left: 0;
+    bottom: 0.3vh;
+    display: flex;
+    justify-content: center;
+    padding-top: 0.2%;
+    padding-right: 0.2%;
+}
+
+input[type=radio]:checked + label:before {
+    content: "\2022";
+    color: rgba(172,214,36,255);
+    font-size: 47px;
+    line-height: 12px;
+}

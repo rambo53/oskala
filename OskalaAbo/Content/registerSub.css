@@ -1,0 +1,28 @@
+﻿
+/*formulaire inscription et lien pour connexion*/
+
+.div-principale{
+    margin: 10vh 10vw 10vh 10vw;  
+}
+
+/*formulaire inscription*/
+
+.div-principale-inscription{
+    border-radius: 5%;
+    overflow:hidden;
+    border:solid;
+}
+
+/*lien pour connexion*/
+
+.div-deja-inscrit {
+    margin: 20vh 0 0 10vw;
+}
+
+@media (max-width: 992px) {
+    .div-deja-inscrit {
+        margin: 5vh 0 0 0;
+    }
+
+}
+
